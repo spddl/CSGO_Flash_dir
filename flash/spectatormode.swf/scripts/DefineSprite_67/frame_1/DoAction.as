@@ -1,0 +1,1 @@
+SFText.InitAsSFText(this);

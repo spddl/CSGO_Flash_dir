@@ -1,0 +1,2 @@
+gotoAndStop("StartFade");
+play();

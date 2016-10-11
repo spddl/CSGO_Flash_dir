@@ -1,0 +1,2 @@
+FlashMovie.gotoAndPlay("StartShow");
+stop();

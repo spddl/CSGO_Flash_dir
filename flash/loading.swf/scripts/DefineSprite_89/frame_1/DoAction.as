@@ -1,0 +1,2 @@
+Lib.TintManager.StaticRegisterForTint(RetrievingDataNotification,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(TitleText,Lib.TintManager.TintRegister_All);

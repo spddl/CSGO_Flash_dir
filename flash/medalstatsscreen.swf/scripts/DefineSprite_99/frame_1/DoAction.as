@@ -1,0 +1,12 @@
+Lib.TintManager.StaticRegisterForTint(LastMatchTitle,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(Team,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(FavoriteWeapon,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(TeamDescription,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(TeamData,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(FavoriteWeaponName,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(WeaponDescription,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(WeaponData,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(PerformanceDescription,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(PerformanceData,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(MiscDescription,Lib.TintManager.TintRegister_All);
+Lib.TintManager.StaticRegisterForTint(MiscData,Lib.TintManager.TintRegister_All);

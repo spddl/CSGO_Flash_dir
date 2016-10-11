@@ -1,0 +1,6 @@
+function onPress()
+{
+}
+function onRelease()
+{
+}

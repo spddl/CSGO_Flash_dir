@@ -1,0 +1,1 @@
+SFButton.InitAsStandardSFButton(this);

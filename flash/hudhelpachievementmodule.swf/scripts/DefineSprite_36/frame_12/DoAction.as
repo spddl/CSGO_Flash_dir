@@ -1,0 +1,2 @@
+stop();
+_visible = false;

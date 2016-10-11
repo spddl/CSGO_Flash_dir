@@ -1,0 +1,2 @@
+stop();
+_root.EndMovie();

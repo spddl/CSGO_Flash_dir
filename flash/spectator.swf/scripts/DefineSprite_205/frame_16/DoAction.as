@@ -1,0 +1,1 @@
+this._isHiding = true;

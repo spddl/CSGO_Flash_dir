@@ -615,6 +615,7 @@ function FillOutMapButtonInfo(TileNumber, ImageNumber)
          _loc2_.NewMapTag._visible = false;
          _loc2_.GamesAvailable._visible = false;
          _loc2_.StrikeMission._visible = false;
+         ShowNewMapsTag(_loc2_);
          PanelNoWorkshopMaps._visible = false;
          _loc2_.Check._visible = bIsCompetitive && !bIsWorkshopmap && bIsMatchmaking;
          _loc2_.Check.Check._visible = false;
@@ -680,7 +681,7 @@ function FillOutMapButtonInfo(TileNumber, ImageNumber)
 }
 function ShowNewMapsTag(MapTileButton)
 {
-   if(MapTileButton.PropertyMapName == "mg_de_overpass" || MapTileButton.PropertyMapName == "mg_de_cbble")
+   if(MapTileButton.PropertyMapName == "mg_de_inferno")
    {
       MapTileButton.NewMapTag._visible = true;
    }

@@ -4,13 +4,26 @@ function SetItemData(strId, PlayerXuid, bIsMarketItem, bisTournamentStickerStore
    this._ItemID = strId;
    this._ItemXuid = PlayerXuid;
    this._Quantity = 1;
+   ItemImage._x = 0;
+   ItemImage._y = 0;
+   ItemImageRef._x = 0;
+   ItemImageRef._visible = false;
+   var _loc4_ = _global.CScaleformComponent_Inventory.IsCouponCrate(0,strId);
+   this._IsCoupon = _loc4_;
    if(bisTournamentStickerStoreProxy)
    {
       SetUpTournamentStrickerData();
    }
    else
    {
-      SetName(GetName());
+      if(_loc4_)
+      {
+         SetName(_global.CScaleformComponent_Inventory.GetItemName(this._ItemXuid,GetLootListItem()));
+      }
+      else
+      {
+         SetName(GetName());
+      }
       SetPrice(GetOriginalPrice(strId),GetSalePrice(strId),GetSalePercent(strId));
       SetNew(GetIsNew());
       SetMarketLink(bIsMarketItem);
@@ -29,6 +42,13 @@ function SetItemData(strId, PlayerXuid, bIsMarketItem, bisTournamentStickerStore
          ItemImage._x = 18;
          ItemImage._y = 3;
       }
+      else if(_loc4_)
+      {
+         SetImage(96,72,GetImagePath("coupon"),ItemImage);
+         SetImage(96,72,GetImagePath("coupon"),ItemImageRef);
+         ItemImage._x = 10;
+         ItemImageRef._x = 10;
+      }
       else
       {
          SetImage(118,100,GetImagePath(""),ItemImage);
@@ -40,6 +60,10 @@ function SetItemData(strId, PlayerXuid, bIsMarketItem, bisTournamentStickerStore
       SetUpQuantityButtons();
       SetQuantity(this._Quantity);
    }
+}
+function ShowReflection()
+{
+   ItemImageRef._visible = this._IsCoupon;
 }
 function SetItemDataTeamWatchTab(strId, PlayerXuid)
 {

@@ -285,8 +285,10 @@ function ScaleformComponent_Inventory_ModelPanelReady()
 function ScaleformComponent_FriendsList_NameChanged()
 {
    var _loc2_ = _global.MainMenuAPI.GetScaleformComponentEventParamString("ScaleformComponent_FriendsList_NameChanged","xuid");
+   trace("------------------------------------ScaleformComponent_FriendsList_NameChanged----------------------" + _loc2_);
    Panel.WatchPanel.MatchData.Scoreboard.UpdateScoreBoardNames(0);
    Panel.WatchPanel.MatchData.Scoreboard.UpdateScoreBoardNames(1);
+   Panel.WatchPanel.MatchData.Rounds.UpdateBtns(_loc2_);
 }
 function ScaleformComponent_MyPersona_InventoryUpdated()
 {

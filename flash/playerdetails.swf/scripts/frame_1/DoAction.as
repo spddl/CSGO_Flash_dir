@@ -396,8 +396,9 @@ function ToggleMuteOnPlayer()
 }
 function ShowAvatar(xuid, playerNameText, bIsSelf, bIsFriend, strPanelType)
 {
-   var _loc4_ = PlayerDetailsAPI.IsLocalPlayerPlayingMatch();
-   var _loc5_ = _global.CScaleformComponent_FriendsList.IsFriendPlayingCSGO(xuid);
+   var _loc5_ = PlayerDetailsAPI.IsLocalPlayerPlayingMatch();
+   var _loc6_ = _global.CScaleformComponent_FriendsList.IsFriendPlayingCSGO(xuid);
+   var _loc2_ = _global.CScaleformComponent_MyPersona.GetLauncherType() != "perfectworld"?false:true;
    m_selectedPlayerXuid = xuid;
    Panel.SubmittedPanel.NameText.Text.htmlText = playerNameText;
    if(m_selectedPlayerXuid == _global.CScaleformComponent_MyPersona.GetXuid())
@@ -413,10 +414,11 @@ function ShowAvatar(xuid, playerNameText, bIsSelf, bIsFriend, strPanelType)
    Panel.SubmittedPanel.ServerNameText._visible = false;
    Panel.Accept._visible = false;
    Panel.PlayerProfile._visible = false;
+   Panel.ViewProfile._visible = !_loc2_;
    Panel.ServerReportPanel._visible = false;
    Panel.ReportTabButton.setDisabled(false);
    Panel.CommendTabButton.setDisabled(false);
-   Panel.MutePlayer._visible = !bIsSelf && _loc4_;
+   Panel.MutePlayer._visible = !bIsSelf && _loc5_;
    Panel.Trade.setDisabled(bIsSelf);
    switch(strPanelType)
    {
@@ -427,7 +429,7 @@ function ShowAvatar(xuid, playerNameText, bIsSelf, bIsFriend, strPanelType)
          Panel.ReportTabButton._visible = true;
          Panel.SubmittedPanel.NameText._visible = true;
          Panel.PlayerProfile.InitPlayerProfile(xuid);
-         Panel.Trade._visible = true;
+         Panel.Trade._visible = true && !_loc2_;
          OpenCommendTab();
          break;
       case "ProfileCommend":
@@ -436,7 +438,7 @@ function ShowAvatar(xuid, playerNameText, bIsSelf, bIsFriend, strPanelType)
          Panel.CommendTabButton._visible = true;
          Panel.ReportTabButton._visible = true;
          Panel.SubmittedPanel.NameText._visible = true;
-         Panel.Trade._visible = true;
+         Panel.Trade._visible = true && !_loc2_;
          Panel.PlayerProfile.InitPlayerProfile(xuid);
          OpenCommendTab();
          break;
@@ -446,7 +448,7 @@ function ShowAvatar(xuid, playerNameText, bIsSelf, bIsFriend, strPanelType)
          Panel.CommendTabButton._visible = true;
          Panel.ReportTabButton._visible = true;
          Panel.SubmittedPanel.NameText._visible = true;
-         Panel.Trade._visible = true;
+         Panel.Trade._visible = true && !_loc2_;
          Panel.PlayerProfile.InitPlayerProfile(xuid);
          OpenReportTab();
          break;
@@ -470,6 +472,7 @@ function ShowAvatar(xuid, playerNameText, bIsSelf, bIsFriend, strPanelType)
       default:
          Panel.PlayerProfile.InitPlayerProfile(xuid);
          Panel.PlayerProfile._visible = true;
+         Panel.Trade._visible = !_loc2_;
    }
    Panel.gotoAndStop(strPanelType);
 }

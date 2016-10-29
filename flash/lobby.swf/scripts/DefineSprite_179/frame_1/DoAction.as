@@ -780,7 +780,7 @@ function AreLobbyPlayersPrime()
 function UpdatePrimeSettings()
 {
    var _loc2_ = _global.CScaleformComponent_PartyList.GetPartySessionSetting("game/prime") != 0?0:1;
-   _global.CScaleformComponent_PartyList.UpdateSessionSettings("update { Game { prime " + _loc2_ + " }  }");
+   _global.CScaleformComponent_PartyList.UpdateSessionSettings("update { game { prime " + _loc2_ + " }  }");
 }
 function FriendsListUp()
 {
@@ -870,11 +870,12 @@ function onSelectedPlayer(button)
 }
 function OpenContextMenu(objTargetTile)
 {
-   var _loc7_ = _global.MainMenuMovie.Panel.TooltipContextMenu;
-   var _loc11_ = {x:objTargetTile._x + objTargetTile._width,y:objTargetTile._y};
-   var _loc8_ = _global.CScaleformComponent_FriendsList.IsFriendPlayingCSGO(objTargetTile._xuid);
+   var _loc8_ = _global.MainMenuMovie.Panel.TooltipContextMenu;
+   var _loc12_ = {x:objTargetTile._x + objTargetTile._width,y:objTargetTile._y};
+   var _loc9_ = _global.CScaleformComponent_FriendsList.IsFriendPlayingCSGO(objTargetTile._xuid);
    var _loc4_ = [];
    var _loc5_ = [];
+   var _loc7_ = _global.CScaleformComponent_MyPersona.GetLauncherType() != "perfectworld"?false:true;
    if(objTargetTile != null && objTargetTile != undefined)
    {
       var _loc6_ = false;
@@ -892,17 +893,17 @@ function OpenContextMenu(objTargetTile)
             _loc4_.push("ChangeColor");
          }
       }
-      if(_loc8_ && !_loc6_)
+      if(_loc9_ && !_loc6_)
       {
          _loc5_.push("#SFUI_Lobby_ShowCSGOProfile");
          _loc4_.push("ShowCSGOProfile");
       }
-      else if(!_loc6_)
+      else if(!_loc6_ && !_loc7_)
       {
          _loc5_.push("#SFUI_Lobby_ShowGamercard");
          _loc4_.push("ShowGamercard");
       }
-      if(!_loc6_)
+      if(!_loc6_ && !_loc7_)
       {
          _loc5_.push("#SFUI_Steam_Message");
          _loc4_.push("SteamMessage");
@@ -916,8 +917,8 @@ function OpenContextMenu(objTargetTile)
          }
       }
    }
-   _loc7_.TooltipShowHide(objTargetTile);
-   _loc7_.TooltipLayout(_loc4_,_loc5_,objTargetTile,this.AssignContextMenuAction);
+   _loc8_.TooltipShowHide(objTargetTile);
+   _loc8_.TooltipLayout(_loc4_,_loc5_,objTargetTile,this.AssignContextMenuAction);
 }
 function AssignContextMenuAction(strMenuItem, objTargetTile)
 {

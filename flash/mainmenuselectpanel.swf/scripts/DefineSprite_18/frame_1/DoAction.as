@@ -29,13 +29,19 @@ function InitPlayMenuButtons()
    {
       _loc3_.setDisabled(true);
    }
-   _loc3_ = MainMenuPlaySubPanel.CommunityServersButton;
-   _loc3_.SetText("#SFUI_PlayMenu_BrowseServersButton");
-   _loc3_.Type = "Browser";
-   _loc3_.Action = function()
+   var _loc4_ = _global.CScaleformComponent_MyPersona.GetLauncherType() != "perfectworld"?false:true;
+   if(!_loc4_)
    {
-      onSelectedButton(this.Type);
-   };
+      _loc3_ = MainMenuPlaySubPanel.CommunityServersButton;
+      _loc3_.SetText("#SFUI_PlayMenu_BrowseServersButton");
+      _loc3_.Type = "Browser";
+      _loc3_.Action = function()
+      {
+         onSelectedButton(this.Type);
+      };
+   }
+   MainMenuPlaySubPanel.Line._visible = _loc4_;
+   MainMenuPlaySubPanel.CommunityServersButton._visible = !_loc4_;
    _loc3_ = MainMenuPlaySubPanel.OfflineButton;
    _loc3_.SetText("#SFUI_PlayMenu_WithBotsButton");
    _loc3_.Type = "Offline";

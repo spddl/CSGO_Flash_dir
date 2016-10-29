@@ -254,7 +254,7 @@ function onOpenStream()
 }
 function onOpenTournamentSite()
 {
-   _global.CScaleformComponent_SteamOverlay.OpenExternalBrowserURL("http://en.esl-one.com/csgo/cologne-2016/");
+   _global.CScaleformComponent_SteamOverlay.OpenExternalBrowserURL("http://www.eleague.com/major");
 }
 function onLive()
 {

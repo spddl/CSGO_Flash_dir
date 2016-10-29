@@ -93,13 +93,18 @@ function SetUpTopBarMenu()
 }
 function SetUpTopBarMenuNodes()
 {
-   var _loc2_ = new Array({type:"tournament",btn:"top-bar-btn",nametag:"#CSGO_Watch_Cat_Tournament_0",action:this.OnPressTopMenuBtn},{type:m_PlayerXuid,btn:"top-bar-btn",nametag:"#CSGO_Watch_Cat_YourMatches",action:this.OnPressTopMenuBtn},{type:"live",btn:"top-bar-btn",nametag:"#CSGO_Watch_Cat_LiveMatches",action:this.OnPressTopMenuBtn},{type:"downloaded",btn:"top-bar-btn",nametag:"#CSGO_Watch_Cat_Downloaded",action:this.OnPressTopMenuBtn},{type:"streams",btn:"top-bar-btn",nametag:"#CSGO_Watch_Cat_Streams",action:this.OnPressTopMenuBtn});
+   var _loc3_ = new Array({type:"tournament",btn:"top-bar-btn",nametag:"#CSGO_Watch_Cat_Tournament_0",action:this.OnPressTopMenuBtn},{type:m_PlayerXuid,btn:"top-bar-btn",nametag:"#CSGO_Watch_Cat_YourMatches",action:this.OnPressTopMenuBtn},{type:"live",btn:"top-bar-btn",nametag:"#CSGO_Watch_Cat_LiveMatches",action:this.OnPressTopMenuBtn},{type:"downloaded",btn:"top-bar-btn",nametag:"#CSGO_Watch_Cat_Downloaded",action:this.OnPressTopMenuBtn},{type:"streams",btn:"top-bar-btn",nametag:"#CSGO_Watch_Cat_Streams",action:this.OnPressTopMenuBtn});
+   var _loc4_ = _global.CScaleformComponent_MyPersona.GetLauncherType() != "perfectworld"?false:true;
+   if(_loc4_)
+   {
+      _loc3_.splice(4,1);
+   }
    BackToTournament.dialog = this;
    BackToTournament.Action = function()
    {
       BackToTournamentAccordian();
    };
-   return _loc2_;
+   return _loc3_;
 }
 function OnPressTopMenuBtn(objBtn, strType, bSkipAnim)
 {

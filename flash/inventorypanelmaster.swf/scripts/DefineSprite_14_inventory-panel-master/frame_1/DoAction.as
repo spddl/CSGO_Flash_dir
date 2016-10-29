@@ -84,15 +84,16 @@ function RemoveLayout()
 }
 function HideShowBarButtons(bShow)
 {
+   var _loc6_ = _global.CScaleformComponent_MyPersona.GetLauncherType() != "perfectworld"?false:true;
    InventoryButton._visible = bShow && !m_bOnlyGifts;
    LoadoutButton._visible = bShow && !m_bOnlyGifts;
-   Market._visible = bShow && !m_bOnlyGifts;
+   Market._visible = bShow && !m_bOnlyGifts && !_loc6_;
    CloseButton._visible = bShow;
    var _loc4_ = _global.CScaleformComponent_PartyList.IsPartySessionActive();
    if(_loc4_)
    {
       var _loc5_ = _global.CScaleformComponent_PartyList.GetPartySessionSetting("members/numSlots");
-      var _loc3_ = _global.CScaleformComponent_PartyList.GetPartySessionSetting("Game/mmqueue");
+      var _loc3_ = _global.CScaleformComponent_PartyList.GetPartySessionSetting("game/mmqueue");
       CloseButton._visible = false;
       if(_loc5_ == 1 && (_loc3_ != "" && _loc3_ != undefined))
       {

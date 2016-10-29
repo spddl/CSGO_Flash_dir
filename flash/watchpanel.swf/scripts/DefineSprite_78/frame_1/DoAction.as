@@ -1,6 +1,6 @@
 function InitStreamsPanel()
 {
-   var _loc4_ = "images/ui_icons/";
+   var _loc2_ = "images/ui_icons/";
    MoreTwitch.dialog = this;
    MoreTwitch.Action = function()
    {
@@ -10,15 +10,8 @@ function InitStreamsPanel()
    MoreTwitch._visible = true;
    MoreTwitch.ButtonText.Text.autoSize = "left";
    MoreTwitch.ButtonText.Text._x = 20;
-   this._parent.LoadImage(_loc4_ + "external_link.png",MoreTwitch.ImageHolder,28,28,false);
-   LinkTwitch._visible = true;
-   GetTwitchTvState();
+   this._parent.LoadImage(_loc2_ + "external_link.png",MoreTwitch.ImageHolder,28,28,false);
    ShowStreamsSubPanel();
-   var _loc3_ = _global.CScaleformComponent_News.GetActiveTournamentEventID();
-   this._parent.LoadImage("econ/tournaments/team_stickers_banner_" + _loc3_ + ".png",BgImage,901,768,false);
-   BgImage._alpha = 40;
-   Name.htmlText = "#CSGO_Watch_Streams_Tournament";
-   this._parent.LoadImage("econ/tournaments/tournament_logo_" + _loc3_ + ".png",Logo,32,32,false);
 }
 function GetTwitchTvState()
 {

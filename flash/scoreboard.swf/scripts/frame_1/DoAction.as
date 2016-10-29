@@ -2371,26 +2371,30 @@ function OpenContextMenu(objRow)
    }
    objRow._SelectedXuid = gameAPI.GetSelectedPlayerXuid();
    objRow._SelectedIndex = gameAPI.GetSelectedPlayerIndex();
-   var _loc12_ = ScoreBoard.PlayerContextMenu;
+   var _loc13_ = ScoreBoard.PlayerContextMenu;
    var _loc3_ = [];
    var _loc4_ = [];
-   var _loc13_ = _global.CScaleformComponent_FriendsList.IsLocalPlayerPlayingMatch();
+   var _loc14_ = _global.CScaleformComponent_FriendsList.IsLocalPlayerPlayingMatch();
    var _loc8_ = false;
    var _loc6_ = _global.CScaleformComponent_Inventory.GetMusicIDForPlayer(objRow._SelectedXuid);
-   var _loc11_ = _global.CScaleformComponent_MyPersona.GetXuid();
+   var _loc12_ = _global.CScaleformComponent_MyPersona.GetXuid();
+   var _loc11_ = _global.CScaleformComponent_MyPersona.GetLauncherType() != "perfectworld"?false:true;
    if(objRow._SelectedXuid == "" || objRow._SelectedXuid == null || objRow._SelectedXuid == undefined)
    {
       return undefined;
    }
-   if(objRow._SelectedXuid == _loc11_)
+   if(objRow._SelectedXuid == _loc12_)
    {
       _loc8_ = true;
    }
    _loc3_.push("goprofile");
    _loc4_.push("#SFUI_Lobby_ShowCSGOProfile");
-   _loc3_.push("steamprofile");
-   _loc4_.push("#SFUI_Lobby_ShowGamercard");
-   if(!_loc8_)
+   if(!_loc11_)
+   {
+      _loc3_.push("steamprofile");
+      _loc4_.push("#SFUI_Lobby_ShowGamercard");
+   }
+   if(!_loc8_ && !_loc11_)
    {
       _loc3_.push("message");
       _loc4_.push("#SFUI_PlayerDetails_Trade");
@@ -2399,13 +2403,13 @@ function OpenContextMenu(objRow)
    {
       if(_loc6_ != null && _loc6_ != undefined && _loc6_ != 0 && _loc6_ != 1)
       {
-         var _loc14_ = _global.CScaleformComponent_Inventory.GetMusicNameFromMusicID(_loc6_);
+         var _loc15_ = _global.CScaleformComponent_Inventory.GetMusicNameFromMusicID(_loc6_);
          var _loc7_ = _global.GameInterface.GetConvarNumber("cl_borrow_music_from_player_index");
          var _loc10_ = false;
          if(m_MusicKitBorrowedId != _loc6_)
          {
             var _loc9_ = _global.GameInterface.Translate("#SFUI_PlayerDetails_MusicKit");
-            _loc9_ = _global.ConstructString(_loc9_,_global.GameInterface.Translate(_loc14_));
+            _loc9_ = _global.ConstructString(_loc9_,_global.GameInterface.Translate(_loc15_));
             _loc3_.push("seperator");
             _loc4_.push("");
             _loc10_ = true;
@@ -2426,8 +2430,8 @@ function OpenContextMenu(objRow)
    }
    else if(m_MusicKitBorrowedId != null && m_MusicKitBorrowedId != undefined && m_MusicKitBorrowedId != 0 && m_MusicKitBorrowedId != 1)
    {
-      var _loc15_ = _global.CScaleformComponent_Inventory.GetMusicIDForPlayer(_loc11_);
-      if(m_MusicKitBorrowedId != _loc15_)
+      var _loc16_ = _global.CScaleformComponent_Inventory.GetMusicIDForPlayer(_loc12_);
+      if(m_MusicKitBorrowedId != _loc16_)
       {
          _loc3_.push("seperator");
          _loc4_.push("");
@@ -2435,7 +2439,7 @@ function OpenContextMenu(objRow)
          _loc4_.push("#SFUI_PlayerDetails_Revert_MusicKit");
       }
    }
-   if(!_loc8_ && _loc13_)
+   if(!_loc8_ && _loc14_)
    {
       _loc3_.push("seperator");
       _loc4_.push("");
@@ -2459,10 +2463,15 @@ function OpenContextMenu(objRow)
          _loc4_.push("#SFUI_PlayerDetails_Commend");
          _loc3_.push("Report");
          _loc4_.push("#SFUI_PlayerDetails_Report");
+         if("none" == _global.CScaleformComponent_FriendsList.GetFriendRelationship(objRow._SelectedXuid))
+         {
+            _loc3_.push("addfriend");
+            _loc4_.push("#SFUI_Friend_Add");
+         }
       }
    }
-   _loc12_.TooltipShowHide();
-   _loc12_.TooltipLayout(_loc3_,_loc4_,objRow,this.AssignContextMenuAction);
+   _loc13_.TooltipShowHide();
+   _loc13_.TooltipLayout(_loc3_,_loc4_,objRow,this.AssignContextMenuAction);
 }
 function GetMusicKitName(xuid)
 {
@@ -2545,6 +2554,9 @@ function AssignContextMenuAction(strMenuItem, objTargetTile)
          break;
       case "Mute":
          ToggleMute();
+         break;
+      case "addfriend":
+         _global.CScaleformComponent_SteamOverlay.InteractWithUser(objTargetTile._SelectedXuid,"friendadd");
          break;
       case "equipmusickit":
          EquipSelectedMusicKit(objTargetTile);

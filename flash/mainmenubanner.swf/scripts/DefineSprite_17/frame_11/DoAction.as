@@ -1,1 +1,1 @@
-stop();
+this.stop();

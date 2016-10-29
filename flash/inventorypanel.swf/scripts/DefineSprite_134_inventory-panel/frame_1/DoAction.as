@@ -207,8 +207,8 @@ function SetToolTipPaths(StrToolTipType)
 }
 function OpenContextMenu(objTargetTile, bRightClick)
 {
-   var _loc27_ = SetToolTipPaths("Context");
-   var _loc38_ = {x:objTargetTile._x + objTargetTile._width,y:objTargetTile._y};
+   var _loc28_ = SetToolTipPaths("Context");
+   var _loc39_ = {x:objTargetTile._x + objTargetTile._width,y:objTargetTile._y};
    var _loc20_ = objTargetTile.GetItemCapabilityCount();
    var _loc8_ = false;
    var _loc5_ = [];
@@ -224,17 +224,17 @@ function OpenContextMenu(objTargetTile, bRightClick)
       }
       _loc5_.push("selectActionItem");
       _loc4_.push("#SFUI_InvContextMenu_selectActionItem");
-      _loc27_.TooltipShowHide(objTargetTile);
-      _loc27_.TooltipLayout(_loc5_,_loc4_,objTargetTile,this.AssignContextMenuAction);
+      _loc28_.TooltipShowHide(objTargetTile);
+      _loc28_.TooltipLayout(_loc5_,_loc4_,objTargetTile,this.AssignContextMenuAction);
       _global.MainMenuMovie.Panel.TooltipItem.TooltipItemShowHide();
       return undefined;
    }
    if(!objTargetTile.IsTool() && objTargetTile.GetCatagory() != "" && objTargetTile.GetCatagory() != undefined)
    {
       _loc5_.push("preview");
-      var _loc33_ = _global.CScaleformComponent_Inventory.DoesItemMatchDefinitionByName(m_PlayerXuid,objTargetTile._ItemID,"musickit");
-      var _loc34_ = _global.CScaleformComponent_Inventory.DoesItemMatchDefinitionByName(m_PlayerXuid,objTargetTile._ItemID,"musickit_default");
-      if((_loc33_ || _loc34_) && !IsPauseMenuActive())
+      var _loc34_ = _global.CScaleformComponent_Inventory.DoesItemMatchDefinitionByName(m_PlayerXuid,objTargetTile._ItemID,"musickit");
+      var _loc35_ = _global.CScaleformComponent_Inventory.DoesItemMatchDefinitionByName(m_PlayerXuid,objTargetTile._ItemID,"musickit_default");
+      if((_loc34_ || _loc35_) && !IsPauseMenuActive())
       {
          _loc4_.push("#SFUI_InvContextMenu_preview_musickit");
       }
@@ -247,12 +247,12 @@ function OpenContextMenu(objTargetTile, bRightClick)
    }
    if(objTargetTile.IsTool() && _global.CScaleformComponent_Inventory.DoesItemMatchDefinitionByName(m_PlayerXuid,objTargetTile._ItemID,"sticker"))
    {
-      var _loc32_ = "tournament:" + _global.CScaleformComponent_News.GetActiveTournamentEventID();
-      var _loc30_ = _global.CScaleformComponent_Predictions.GetMyPredictionItemIDEventSectionIndex(_loc32_,objTargetTile._ItemID);
-      trace("------------------------------------SectionUsableInPickEm----------------------------------" + _loc30_);
+      var _loc33_ = "tournament:" + _global.CScaleformComponent_News.GetActiveTournamentEventID();
+      var _loc31_ = _global.CScaleformComponent_Predictions.GetMyPredictionItemIDEventSectionIndex(_loc33_,objTargetTile._ItemID);
+      trace("------------------------------------SectionUsableInPickEm----------------------------------" + _loc31_);
       _loc5_.push("preview");
       _loc4_.push("#SFUI_InvContextMenu_preview");
-      if(_loc30_ != null && _loc30_ != undefined && !IsPauseMenuActive())
+      if(_loc31_ != null && _loc31_ != undefined && !IsPauseMenuActive())
       {
          _loc5_.push("open_watch_panel_pickem");
          _loc4_.push("#SFUI_InvContextMenu_can_PickEm");
@@ -263,6 +263,7 @@ function OpenContextMenu(objTargetTile, bRightClick)
          _loc4_.push("");
       }
    }
+   var _loc21_ = _global.CScaleformComponent_MyPersona.GetLauncherType() != "perfectworld"?false:true;
    var _loc7_ = 0;
    while(_loc7_ < _loc20_)
    {
@@ -355,7 +356,7 @@ function OpenContextMenu(objTargetTile, bRightClick)
                var _loc16_ = objTargetTile.GetChosenActionItemsCount("can_sticker");
                var _loc11_ = _global.CScaleformComponent_Inventory.GetItemStickerCount(m_PlayerXuid,objTargetTile._ItemID);
                var _loc14_ = _global.CScaleformComponent_Inventory.GetItemStickerSlotCount(m_PlayerXuid,objTargetTile._ItemID);
-               var _loc26_ = undefined;
+               var _loc27_ = undefined;
                if(_loc16_ > 0 && _loc11_ != _loc14_)
                {
                   _loc5_.push(_loc6_);
@@ -391,31 +392,34 @@ function OpenContextMenu(objTargetTile, bRightClick)
       }
       if(!_loc15_ && _loc7_ == _loc20_ - 1 && objTargetTile.GetSlotID() != "flair0" && objTargetTile.GetSlotID() != "musickit" && objTargetTile.GetSlotID() != "spray0")
       {
-         _loc5_.push("seperator");
-         _loc4_.push("");
+         if(!_loc21_)
+         {
+            _loc5_.push("seperator");
+            _loc4_.push("");
+         }
       }
       _loc7_ = _loc7_ + 1;
    }
    if(objTargetTile.GetCatagory() != "" && objTargetTile.GetCatagory() != undefined)
    {
-      var _loc22_ = objTargetTile.GetSlotID();
+      var _loc23_ = objTargetTile.GetSlotID();
       if(objTargetTile.GetSlotID() == "flair0")
       {
          _loc5_.push("flair");
          _loc4_.push("#SFUI_InvContextMenu_flair");
-         var _loc31_ = _global.CScaleformComponent_Inventory.GetItemAttributeValue(m_PlayerXuid,objTargetTile._ItemID,"season access");
-         var _loc25_ = _global.CScaleformComponent_Inventory.GetItemAttributeValue(m_PlayerXuid,objTargetTile._ItemID,"deployment date");
-         trace("--------------------------------strDeploy------------------------------" + _loc25_);
-         if(_loc31_ >= 3 && !IsPauseMenuActive() && _loc25_ != null && _loc25_ != "" && _loc25_ != undefined)
+         var _loc32_ = _global.CScaleformComponent_Inventory.GetItemAttributeValue(m_PlayerXuid,objTargetTile._ItemID,"season access");
+         var _loc26_ = _global.CScaleformComponent_Inventory.GetItemAttributeValue(m_PlayerXuid,objTargetTile._ItemID,"deployment date");
+         trace("--------------------------------strDeploy------------------------------" + _loc26_);
+         if(_loc32_ >= 3 && !IsPauseMenuActive() && _loc26_ != null && _loc26_ != "" && _loc26_ != undefined)
          {
             _loc5_.push("seperator");
             _loc4_.push("");
             _loc5_.push("journal");
             _loc4_.push("#SFUI_InvContextMenu_Journal");
-            var _loc23_ = _global.CScaleformComponent_Inventory.GetCampaignForSeason(_loc31_);
-            if(_loc23_ != "" && _loc23_ != undefined && _loc23_ != null)
+            var _loc24_ = _global.CScaleformComponent_Inventory.GetCampaignForSeason(_loc32_);
+            if(_loc24_ != "" && _loc24_ != undefined && _loc24_ != null)
             {
-               var _loc19_ = _loc23_.split(",");
+               var _loc19_ = _loc24_.split(",");
                _loc19_.sort();
                _loc7_ = 0;
                while(_loc7_ < _loc19_.length)
@@ -449,22 +453,22 @@ function OpenContextMenu(objTargetTile, bRightClick)
       }
       else
       {
-         var _loc29_ = false;
+         var _loc30_ = false;
          if(objTargetTile.GetTeam() == "#CSGO_Inventory_Team_Any")
          {
-            if(_loc22_ == "spray0")
+            if(_loc23_ == "spray0")
             {
-               var _loc21_ = 1;
-               _loc29_ = true;
+               var _loc22_ = 1;
+               _loc30_ = true;
                _loc5_.push("preview");
                _loc4_.push("#SFUI_InvContextMenu_preview");
                _loc5_.push("seperator");
                _loc4_.push("");
                _loc7_ = 0;
-               while(_loc7_ < _loc21_)
+               while(_loc7_ < _loc22_)
                {
-                  var _loc35_ = GetItemToReplaceName("noteam","spray" + _loc7_);
-                  if(_loc35_ == "")
+                  var _loc36_ = GetItemToReplaceName("noteam","spray" + _loc7_);
+                  if(_loc36_ == "")
                   {
                      _loc5_.push("equipspray" + _loc7_);
                      _loc4_.push(MakeSprayContextMenuEntry(objTargetTile._ItemID,_loc7_ + 1,"equip"));
@@ -475,14 +479,14 @@ function OpenContextMenu(objTargetTile, bRightClick)
                      if(objTargetTile._ItemID == _loc10_)
                      {
                         _loc5_.push("disabled");
-                        _loc35_ = MakeSprayContextMenuEntry(_loc10_,_loc7_ + 1,"equipped");
+                        _loc36_ = MakeSprayContextMenuEntry(_loc10_,_loc7_ + 1,"equipped");
                      }
                      else
                      {
                         _loc5_.push("equipspray" + _loc7_);
-                        _loc35_ = MakeSprayContextMenuEntry(_loc10_,_loc7_ + 1,"replace");
+                        _loc36_ = MakeSprayContextMenuEntry(_loc10_,_loc7_ + 1,"replace");
                      }
-                     _loc4_.push(_loc35_);
+                     _loc4_.push(_loc36_);
                   }
                   objTargetTile._SpraySlot = _loc7_;
                   _loc7_ = _loc7_ + 1;
@@ -499,45 +503,48 @@ function OpenContextMenu(objTargetTile, bRightClick)
                }
                if(objTargetTile.IsEquippedCT() == false)
                {
-                  _loc35_ = GetItemToReplaceName("ct",_loc22_);
+                  _loc36_ = GetItemToReplaceName("ct",_loc23_);
                   _loc5_.push("ct");
-                  _loc4_.push(_loc35_);
+                  _loc4_.push(_loc36_);
                }
                if(objTargetTile.IsEquippedT() == false)
                {
-                  _loc35_ = GetItemToReplaceName("t",_loc22_);
+                  _loc36_ = GetItemToReplaceName("t",_loc23_);
                   _loc5_.push("t");
-                  _loc4_.push(_loc35_);
+                  _loc4_.push(_loc36_);
                }
             }
          }
          else if(objTargetTile.GetTeam() == "#CSGO_Inventory_Team_CT" && objTargetTile.IsEquippedCT() == false)
          {
-            _loc35_ = GetItemToReplaceName("ct",_loc22_);
+            _loc36_ = GetItemToReplaceName("ct",_loc23_);
             _loc5_.push("ct");
-            _loc4_.push(_loc35_);
+            _loc4_.push(_loc36_);
          }
          else if(objTargetTile.GetTeam() == "#CSGO_Inventory_Team_T" && objTargetTile.IsEquippedT() == false)
          {
-            _loc35_ = GetItemToReplaceName("t",_loc22_);
+            _loc36_ = GetItemToReplaceName("t",_loc23_);
             _loc5_.push("t");
-            _loc4_.push(_loc35_);
+            _loc4_.push(_loc36_);
          }
       }
-      if(!_loc29_)
+      if(!_loc30_)
       {
          _loc5_.push("openloadout");
          _loc4_.push("#SFUI_InvContextMenu_openloadout");
       }
-      if(objTargetTile.GetSlotID() != "flair0" && !_loc29_ && !_global.CScaleformComponent_Inventory.IsItemDefault(m_PlayerXuid,objTargetTile._ItemID))
+      if(objTargetTile.GetSlotID() != "flair0" && !_loc30_ && !_global.CScaleformComponent_Inventory.IsItemDefault(m_PlayerXuid,objTargetTile._ItemID))
       {
-         _loc5_.push("seperator");
-         _loc4_.push("");
+         if(!_loc21_)
+         {
+            _loc5_.push("seperator");
+            _loc4_.push("");
+         }
       }
    }
    if(objTargetTile != null && objTargetTile.GetItemType() != "default")
    {
-      if(_global.CScaleformComponent_Inventory.IsMarketable(m_PlayerXuid,objTargetTile._ItemID))
+      if(_global.CScaleformComponent_Inventory.IsMarketable(m_PlayerXuid,objTargetTile._ItemID) && !_loc21_)
       {
          _loc5_.push("sell");
          _loc4_.push("#SFUI_InvContextMenu_sell");
@@ -556,20 +563,20 @@ function OpenContextMenu(objTargetTile, bRightClick)
          }
          else
          {
-            var _loc24_ = _global.CScaleformComponent_Inventory.GetNumItemsNeededToTradeUp(m_PlayerXuid,objTargetTile._ItemID);
-            if(_loc24_ > 0)
+            var _loc25_ = _global.CScaleformComponent_Inventory.GetNumItemsNeededToTradeUp(m_PlayerXuid,objTargetTile._ItemID);
+            if(_loc25_ > 0)
             {
-               _loc24_ = 10 - _loc24_;
+               _loc25_ = 10 - _loc25_;
                _loc5_.push("tradeNeedsItems");
-               var _loc28_ = _global.GameInterface.Translate("#SFUI_InvContextMenu_tradeup_More");
-               _loc28_ = _global.ConstructString(_loc28_,_loc24_);
-               _loc4_.push(_loc28_);
+               var _loc29_ = _global.GameInterface.Translate("#SFUI_InvContextMenu_tradeup_More");
+               _loc29_ = _global.ConstructString(_loc29_,_loc25_);
+               _loc4_.push(_loc29_);
             }
          }
       }
    }
-   _loc27_.TooltipShowHide(objTargetTile);
-   _loc27_.TooltipLayout(_loc5_,_loc4_,objTargetTile,this.AssignContextMenuAction);
+   _loc28_.TooltipShowHide(objTargetTile);
+   _loc28_.TooltipLayout(_loc5_,_loc4_,objTargetTile,this.AssignContextMenuAction);
    _global.MainMenuMovie.Panel.TooltipItem.TooltipItemShowHide();
 }
 function IsGift(objTargetTile)

@@ -314,7 +314,6 @@ function SetUpBannerControls()
       {
          Controls["mcDot" + _loc1_]._x = Controls["mcDot" + (_loc1_ - 1)]._x + _loc2_;
          Controls.ButtonNext._x = Controls["mcDot" + _loc1_]._x + _loc2_ + 5;
-         Controls.mcKey._x = 0;
       }
       else
       {
@@ -325,11 +324,6 @@ function SetUpBannerControls()
    Bg.BgControls._x = Bg._width - Bg.BgControls._width;
    Controls._x = Bg.BgControls._x + Bg.BgControls._width / 2;
    Controls._x = Controls._x - Controls._width / 2;
-   Controls.mcKey._x = 0 + Bg.BgControls._width / 2;
-   if(numPages >= 5)
-   {
-      Controls.mcKey._x = Controls.ButtonNext._x + 10;
-   }
    trace("-------------------------!!!STORE!!!!Controls._x----------------------" + Controls._x);
    Bg.BgControls._visible = true;
    var numLoop = 0;
@@ -349,6 +343,14 @@ function SetUpContolsButtons(numPages)
    while(_loc3_ < numPages)
    {
       var _loc2_ = Controls["mcDot" + _loc3_];
+      if(numPages <= 1)
+      {
+         _loc2_._visible = false;
+      }
+      else
+      {
+         _loc2_._visible = true;
+      }
       _loc2_.dialog = this;
       _loc2_.actionSound = "PageScroll";
       _loc2_.Selected._visible = false;
@@ -359,7 +361,7 @@ function SetUpContolsButtons(numPages)
       };
       _loc3_ = _loc3_ + 1;
    }
-   SetUpScrollButtons();
+   SetUpScrollButtons(numPages);
    SetUpKeyButton();
    GoToPage(Controls.mcDot0);
    StartTimer();
@@ -377,11 +379,11 @@ function SetUpKeyButton()
    {
       return undefined;
    }
-   Controls.mcKey._visible = true;
-   Controls.mcKey.dialog = this;
-   Controls.mcKey.actionSound = "PageScroll";
-   Controls.mcKey.Selected._visible = false;
-   Controls.mcKey.Action = function()
+   mcKey._visible = true;
+   mcKey.dialog = this;
+   mcKey.actionSound = "PageScroll";
+   mcKey.Selected._visible = false;
+   mcKey.Action = function()
    {
       this.dialog.ShowHideKeys();
    };
@@ -389,7 +391,7 @@ function SetUpKeyButton()
 function ShowHideKeys()
 {
    bShowKeys = !bShowKeys;
-   Controls.mcKey.Selected._visible = bShowKeys;
+   mcKey.Selected._visible = bShowKeys;
    if(bShowKeys)
    {
       MakePages(m_aKeys);
@@ -459,6 +461,7 @@ function MakeLayout(numPage, bReverseAnim)
          StoreLister["mcTile" + _loc1_]._x = StoreLister["mcTile" + (_loc1_ - 1)]._width + StoreLister["mcTile" + (_loc1_ - 1)]._x;
       }
       StoreLister["mcTile" + _loc1_]._alpha = 0;
+      StoreLister["mcTile" + _loc1_].ItemImageRef._visible = false;
       _loc1_ = _loc1_ + 1;
    }
    PageAnim(_loc3_,numPage,bReverseAnim);
@@ -521,6 +524,7 @@ function FadeUpTile(TargetMc)
       }
       else
       {
+         TargetMc.ShowReflection();
          delete TargetMc.onEnterFrame;
       }
    };
@@ -544,8 +548,23 @@ function SetScrollButtonsState(numPage)
       Controls.ButtonNext.setDisabled(false);
    }
 }
-function SetUpScrollButtons()
+function SetUpScrollButtons(numPages)
 {
+   Bg.onRollOver = function()
+   {
+      PauseScrollTimer();
+   };
+   Bg.onRollOut = function()
+   {
+      StartScrollTimer();
+      ShowHideToolTip(null);
+   };
+   if(numPages <= 1)
+   {
+      Controls.ButtonNext._visible = false;
+      Controls.ButtonPrev._visible = false;
+      return undefined;
+   }
    Controls.ButtonNext.dialog = this;
    Controls.ButtonNext.actionSound = "PageScroll";
    Controls.ButtonNext.Action = function()
@@ -569,15 +588,6 @@ function SetUpScrollButtons()
    Controls.ButtonPrev.onRollOver = function()
    {
       PauseScrollTimer();
-   };
-   Bg.onRollOver = function()
-   {
-      PauseScrollTimer();
-   };
-   Bg.onRollOut = function()
-   {
-      StartScrollTimer();
-      ShowHideToolTip(null);
    };
 }
 function onScrollForward()
@@ -666,7 +676,7 @@ StoreLister.mcSingle._visible = false;
 Controls.ButtonNext._visible = false;
 Controls.ButtonPrev._visible = false;
 Controls.mcDot._visible = false;
-Controls.mcKey._visible = false;
+mcKey._visible = false;
 Controls._visible = false;
 CouponTile._visible = false;
 Bg.BgControls._visible = false;

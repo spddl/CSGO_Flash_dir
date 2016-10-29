@@ -175,36 +175,39 @@ function SetUpMapButtonsActions()
    }
    else
    {
-      ModeChooser.TabWorkshop._visible = bIsWorkshopmap;
       ModeChooser.TrainingTab._visible = false;
-      ModeChooser.TabDefaultBtn._visible = true;
-      ModeChooser.TabWorkshopBtn._visible = true;
-      ModeChooser.TabDefaultBtn.dialog = this;
-      ModeChooser.TabDefaultBtn.type = "Default";
-      ModeChooser.TabDefaultBtn.SetText("#SFUI_Maps_Offical_Title");
-      ModeChooser.TabDefaultBtn.Action = function()
+      ModeChooser.TabDefaultBtn._visible = !m_bIsPerfectWorld;
+      ModeChooser.TabWorkshopBtn._visible = !m_bIsPerfectWorld;
+      ModeChooser.TabWorkshop._visible = bIsWorkshopmap && !m_bIsPerfectWorld;
+      if(!m_bIsPerfectWorld)
       {
-         this.dialog.onSelectedTabButton(this);
-      };
-      ModeChooser.TabWorkshopBtn.dialog = this;
-      ModeChooser.TabWorkshopBtn.type = "Workshop";
-      ModeChooser.TabWorkshopBtn.SetText("#SFUI_Maps_Workshop_Title");
-      ModeChooser.TabWorkshopBtn.Action = function()
-      {
-         this.dialog.onSelectedTabButton(this);
-      };
-      ModeChooser.TabWorkshop.RefreshWorkshop.dialog = this;
-      ModeChooser.TabWorkshop.RefreshWorkshop.SetText("#SFUI_Refresh_Workshop_Maps");
-      ModeChooser.TabWorkshop.RefreshWorkshop.Action = function()
-      {
-         this.dialog.RefreshWorkshopData();
-      };
-      ModeChooser.TabWorkshop.OpenWorkshop.dialog = this;
-      ModeChooser.TabWorkshop.OpenWorkshop.SetText("#SFUI_View_Maps_Workshop");
-      ModeChooser.TabWorkshop.OpenWorkshop.Action = function()
-      {
-         this.dialog.OpenWorkshopInOverlay();
-      };
+         ModeChooser.TabDefaultBtn.dialog = this;
+         ModeChooser.TabDefaultBtn.type = "Default";
+         ModeChooser.TabDefaultBtn.SetText("#SFUI_Maps_Offical_Title");
+         ModeChooser.TabDefaultBtn.Action = function()
+         {
+            this.dialog.onSelectedTabButton(this);
+         };
+         ModeChooser.TabWorkshopBtn.dialog = this;
+         ModeChooser.TabWorkshopBtn.type = "Workshop";
+         ModeChooser.TabWorkshopBtn.SetText("#SFUI_Maps_Workshop_Title");
+         ModeChooser.TabWorkshopBtn.Action = function()
+         {
+            this.dialog.onSelectedTabButton(this);
+         };
+         ModeChooser.TabWorkshop.RefreshWorkshop.dialog = this;
+         ModeChooser.TabWorkshop.RefreshWorkshop.SetText("#SFUI_Refresh_Workshop_Maps");
+         ModeChooser.TabWorkshop.RefreshWorkshop.Action = function()
+         {
+            this.dialog.RefreshWorkshopData();
+         };
+         ModeChooser.TabWorkshop.OpenWorkshop.dialog = this;
+         ModeChooser.TabWorkshop.OpenWorkshop.SetText("#SFUI_View_Maps_Workshop");
+         ModeChooser.TabWorkshop.OpenWorkshop.Action = function()
+         {
+            this.dialog.OpenWorkshopInOverlay();
+         };
+      }
       if(bIsMatchmaking)
       {
          ModeChooser.TabWorkshop.DescText.htmlText = "#SFUI_Workshop_Desc";
@@ -616,6 +619,10 @@ function FillOutMapButtonInfo(TileNumber, ImageNumber)
          _loc2_.GamesAvailable._visible = false;
          _loc2_.StrikeMission._visible = false;
          ShowNewMapsTag(_loc2_);
+         if(m_bIsPerfectWorld)
+         {
+            HideMonastery(_loc2_);
+         }
          PanelNoWorkshopMaps._visible = false;
          _loc2_.Check._visible = bIsCompetitive && !bIsWorkshopmap && bIsMatchmaking;
          _loc2_.Check.Check._visible = false;
@@ -684,6 +691,13 @@ function ShowNewMapsTag(MapTileButton)
    if(MapTileButton.PropertyMapName == "mg_de_inferno")
    {
       MapTileButton.NewMapTag._visible = true;
+   }
+}
+function HideMonastery(MapTileButton)
+{
+   if(MapTileButton.PropertyMapName == "mg_ar_monastery")
+   {
+      MapTileButton._visible = false;
    }
 }
 function UpdateMissionIcon()
@@ -1429,6 +1443,8 @@ if(_global.navSelectMode != undefined)
    return undefined;
 }
 var dialog = new MainUI.StartSinglePlayerDialog.SinglePlayerDialog(this);
+var m_bIsPerfectWorld = _global.CScaleformComponent_MyPersona.GetLauncherType() != "perfectworld"?false:true;
+trace("ISPERFECT WORLD" + m_bIsPerfectWorld);
 var nStyle_SelectMode = 1;
 var nStyle_SelectMap = 2;
 var _nStyle = nStyle_SelectMode;

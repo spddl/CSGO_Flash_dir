@@ -404,10 +404,10 @@ function SetItemDataForCatagory(objWedge, strWeaponSlot)
 function OpenLoadoutContextMenu(objTarget, bRightClick)
 {
    var _loc8_ = SetToolTipPaths("Context");
-   var _loc13_ = {x:objTarget._x + objTarget._width,y:objTarget._y};
+   var _loc14_ = {x:objTarget._x + objTarget._width,y:objTarget._y};
    var _loc5_ = [];
    var _loc3_ = [];
-   var _loc10_ = "";
+   var _loc11_ = "";
    var _loc7_ = objTarget.GetSlotID();
    if(m_strCurrentCatagory == "flair0")
    {
@@ -528,7 +528,8 @@ function OpenLoadoutContextMenu(objTarget, bRightClick)
          }
       }
    }
-   if(objTarget._Type == "inventory" && _global.CScaleformComponent_Inventory.IsMarketable(m_PlayerXuid,objTarget._ItemID))
+   var _loc10_ = _global.CScaleformComponent_MyPersona.GetLauncherType() != "perfectworld"?false:true;
+   if(objTarget._Type == "inventory" && _global.CScaleformComponent_Inventory.IsMarketable(m_PlayerXuid,objTarget._ItemID) && !_loc10_)
    {
       _loc5_.push("seperator");
       _loc3_.push("");

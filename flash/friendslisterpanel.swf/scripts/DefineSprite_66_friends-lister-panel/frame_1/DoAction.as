@@ -521,18 +521,23 @@ function SetPanelPosAndSize(MissionPanelState)
 }
 function OpenContextMenu(objPlayerTile)
 {
-   var _loc7_ = _global.MainMenuMovie.Panel.TooltipContextMenu;
-   var _loc14_ = {x:objPlayerTile._x + objPlayerTile._width,y:objPlayerTile._y};
+   var _loc10_ = _global.MainMenuMovie.Panel.TooltipContextMenu;
+   var _loc16_ = {x:objPlayerTile._x + objPlayerTile._width,y:objPlayerTile._y};
    trace("----------------------------------------------objPlayerTile._xuid-------------------------:" + objPlayerTile._xuid);
-   var _loc6_ = objPlayerTile._xuid;
-   var _loc11_ = _global.CScaleformComponent_FriendsList.IsFriendInvited(_loc6_);
-   var _loc9_ = _global.CScaleformComponent_FriendsList.IsFriendJoinable(_loc6_);
-   var _loc8_ = _global.CScaleformComponent_FriendsList.IsFriendWatchable(_loc6_);
-   var _loc10_ = _global.CScaleformComponent_FriendsList.IsFriendPlayingCSGO(_loc6_);
+   var _loc7_ = objPlayerTile._xuid;
+   var _loc13_ = _global.CScaleformComponent_FriendsList.IsFriendInvited(_loc7_);
+   var _loc12_ = _global.CScaleformComponent_FriendsList.IsFriendJoinable(_loc7_);
+   var _loc11_ = _global.CScaleformComponent_FriendsList.IsFriendWatchable(_loc7_);
+   var _loc9_ = _global.CScaleformComponent_FriendsList.IsFriendPlayingCSGO(_loc7_);
+   var _loc8_ = _global.CScaleformComponent_MyPersona.GetLauncherType() != "perfectworld"?false:true;
+   var _loc5_ = _global.CScaleformComponent_FriendsList.GetFriendStatusBucket(_loc7_);
    var _loc3_ = [];
    var _loc4_ = [];
-   _loc3_.push("invite");
-   _loc4_.push("#SFUI_Invite_Lobby");
+   if(_loc5_ == "PlayingCSGO" || _loc5_ == "Online")
+   {
+      _loc3_.push("invite");
+      _loc4_.push("#SFUI_Invite_Lobby");
+   }
    if(CanSummonForCoop() && !_global.LobbyMovie)
    {
       _loc3_.push("summonmissioncoop");
@@ -543,32 +548,68 @@ function OpenContextMenu(objPlayerTile)
       _loc3_.push("summonmissioncoopmission");
       _loc4_.push("#SFUI_Summon_For_Assult");
    }
-   if(_loc9_)
+   if(_loc12_)
    {
       _loc3_.push("join");
       _loc4_.push("#SFUI_Join_Game");
    }
-   if(_loc8_)
+   if(_loc11_)
    {
       _loc3_.push("watch");
       _loc4_.push("#SFUI_Watch");
    }
-   _loc3_.push("seperator");
-   _loc4_.push("");
-   if(_loc10_)
+   if(_loc5_ == "AwaitingLocalAccept" || _loc5_ == "AwaitingRemoteAccept")
    {
-      _loc3_.push("goprofile");
-      _loc4_.push("#SFUI_Lobby_ShowCSGOProfile");
+      if(_loc3_.length > 0)
+      {
+         _loc3_.push("seperator");
+         _loc4_.push("");
+      }
+      if(_loc5_ == "AwaitingLocalAccept")
+      {
+         _loc3_.push("friendaccept");
+         _loc4_.push("#SFUI_Accept_Friend_Request");
+         _loc3_.push("friendignore");
+         _loc4_.push("#SFUI_Ignore_Friend_Request");
+      }
+      if(_loc5_ == "AwaitingRemoteAccept")
+      {
+         _loc3_.push("cancelinvite");
+         _loc4_.push("#SFUI_Friend_Invite_Canel");
+      }
    }
-   else
+   if(_loc9_ || !_loc8_)
    {
-      _loc3_.push("steamprofile");
-      _loc4_.push("#SFUI_Lobby_ShowGamercard");
+      _loc3_.push("seperator");
+      _loc4_.push("");
+      if(_loc9_)
+      {
+         _loc3_.push("goprofile");
+         _loc4_.push("#SFUI_Lobby_ShowCSGOProfile");
+      }
+      if(!_loc8_)
+      {
+         _loc3_.push("steamprofile");
+         _loc4_.push("#SFUI_Lobby_ShowGamercard");
+         _loc3_.push("message");
+         _loc4_.push("#SFUI_Steam_Message");
+      }
    }
-   _loc3_.push("message");
-   _loc4_.push("#SFUI_Steam_Message");
-   _loc7_.TooltipShowHide(objPlayerTile);
-   _loc7_.TooltipLayout(_loc3_,_loc4_,objPlayerTile,this.AssignContextMenuAction);
+   if(_loc8_ && (_loc5_ != "AwaitingRemoteAccept" && _loc5_ != "AwaitingLocalAccept"))
+   {
+      if(_loc3_.length > 0)
+      {
+         _loc3_.push("seperator");
+         _loc4_.push("");
+      }
+      _loc3_.push("removefriend");
+      _loc4_.push("#SFUI_Friend_Remove");
+   }
+   if(_loc3_.length > 0)
+   {
+      _loc10_.TooltipShowHide(objPlayerTile);
+      _loc10_.TooltipLayout(_loc3_,_loc4_,objPlayerTile,this.AssignContextMenuAction);
+   }
 }
 function AssignContextMenuAction(strMenuItem, objTargetTile)
 {
@@ -597,6 +638,18 @@ function AssignContextMenuAction(strMenuItem, objTargetTile)
          break;
       case "summonmissioncoop":
          onSummonForCoopMission(objTargetTile._xuid);
+         break;
+      case "friendaccept":
+         onFriendAction(objTargetTile._xuid,"friendrequestaccept");
+         break;
+      case "friendignore":
+         onFriendAction(objTargetTile._xuid,"friendrequestignore");
+         break;
+      case "cancelinvite":
+         onFriendAction(objTargetTile._xuid,"friendremove");
+         break;
+      case "removefriend":
+         onFriendAction(objTargetTile._xuid,"friendremove");
    }
 }
 function CanSummonForCoop()
@@ -688,6 +741,10 @@ function onSteamProfile(xuid)
 function onMessage(xuid)
 {
    _global.CScaleformComponent_SteamOverlay.StartChatWithUser(xuid);
+}
+function onFriendAction(xuid, strAction)
+{
+   _global.CScaleformComponent_SteamOverlay.InteractWithUser(xuid,strAction);
 }
 var m_testCount = 19;
 var FriendListInfo = new Object();

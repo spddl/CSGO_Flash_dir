@@ -3,13 +3,13 @@ function GetTileInfo(friendXuid)
    var _loc5_ = _global.CScaleformComponent_FriendsList.GetFriendName(friendXuid);
    var _loc8_ = _global.CScaleformComponent_FriendsList.GetFriendStatus(friendXuid);
    var _loc9_ = _global.CScaleformComponent_FriendsList.IsFriendInvited(friendXuid);
-   var _loc6_ = _global.CScaleformComponent_FriendsList.IsFriendJoinable(friendXuid);
+   var _loc7_ = _global.CScaleformComponent_FriendsList.IsFriendJoinable(friendXuid);
    var _loc4_ = _global.CScaleformComponent_FriendsList.IsFriendWatchable(friendXuid);
-   var _loc7_ = _global.CScaleformComponent_FriendsList.IsFriendPlayingCSGO(friendXuid);
+   var _loc6_ = _global.CScaleformComponent_FriendsList.GetFriendStatusBucket(friendXuid);
    this._xuid = friendXuid;
-   UpdateTile(friendXuid,_loc5_,_loc8_,_loc9_,_loc6_,_loc4_,_loc7_);
+   UpdateTile(friendXuid,_loc5_,_loc8_,_loc9_,_loc7_,_loc4_,_loc6_);
 }
-function UpdateTile(friendXuid, friendName, friendStatus, bInvited, bCanJoin, bCanWatch, bIsPlayingGame)
+function UpdateTile(friendXuid, friendName, friendStatus, bInvited, bCanJoin, bCanWatch, strStatusBucket)
 {
    var _loc5_ = "0x98C840";
    var _loc6_ = "0x6B92AD";
@@ -40,17 +40,8 @@ function UpdateTile(friendXuid, friendName, friendStatus, bInvited, bCanJoin, bC
       _loc3_.push(this.InvitedIcon);
    }
    PlaceJoinWatchIcons(_loc3_);
-   InGameStatus._visible = bIsPlayingGame;
-   if(bIsPlayingGame)
-   {
-      PlayerStatus.textColor = _loc5_;
-   }
-   else
-   {
-      PlayerStatus.textColor = _loc6_;
-   }
    RefreshAvatarImage();
-   SetPlayerData(bIsPlayingGame);
+   SetPlayerData(strStatusBucket);
 }
 function ScrollStatusText()
 {
@@ -90,24 +81,49 @@ function RefreshAvatarImage()
    Avatar.ShowAvatar(3,this._xuid,false,false);
    var _loc3_ = Avatar.GetFlairItemName(this._xuid);
 }
-function SetPlayerData(bIsPlayingGame)
+function SetPlayerData(strStatusBucket)
 {
-   var _loc3_ = "0x98C840";
+   var _loc4_ = "0x98C840";
    var _loc5_ = "0x6B92AD";
+   var _loc6_ = "0x666666";
    if(this._xuid == "")
    {
       this._xuid = _global.CScaleformComponent_MyPersona.GetXuid();
    }
-   var _loc4_ = _global.CScaleformComponent_FriendsList.GetFriendName(this._xuid);
-   PlayerName.htmlText = _loc4_;
+   strStatusBucket = _global.CScaleformComponent_FriendsList.GetFriendStatusBucket(this._xuid);
+   var _loc7_ = _global.CScaleformComponent_FriendsList.GetFriendName(this._xuid);
+   trace("-----------------------------STATUS--------------------------" + strStatusBucket);
+   PlayerName.htmlText = _loc7_;
    _global.AutosizeTextDown(PlayerName,10);
-   if(bIsPlayingGame)
+   InGameStatus._visible = false;
+   OnlineStatus._visible = false;
+   AddFriend._visible = false;
+   PendingInvite._visible = false;
+   PlayerName.textColor = _loc6_;
+   PlayerStatus.textColor = _loc6_;
+   if(strStatusBucket == "PlayingCSGO")
    {
-      PlayerName.textColor = _loc3_;
+      PlayerName.textColor = _loc4_;
+      PlayerStatus.textColor = _loc4_;
+      InGameStatus._visible = true;
    }
-   else
+   else if(strStatusBucket == "Online")
    {
       PlayerName.textColor = _loc5_;
+      PlayerStatus.textColor = _loc5_;
+      OnlineStatus._visible = true;
+   }
+   if(strStatusBucket == "AwaitingLocalAccept")
+   {
+      PlayerName.textColor = _loc4_;
+      PlayerStatus.textColor = _loc4_;
+      AddFriend._visible = true;
+      InGameStatus._visible = true;
+   }
+   if(strStatusBucket == "AwaitingRemoteAccept")
+   {
+      PlayerStatus.textColor = "0xCCCCCC";
+      PendingInvite._visible = true;
    }
    RefreshAvatarImage(this._xuid);
 }

@@ -371,15 +371,21 @@ function OnReDownload(MatchId)
 }
 function GetSelectedPlayerActionBtns(MatchId, SelectedXuid, bIsSelf)
 {
-   var _loc18_ = _global.CScaleformComponent_FriendsList.IsFriendInvited(SelectedXuid);
-   var _loc16_ = _global.CScaleformComponent_FriendsList.IsFriendJoinable(SelectedXuid);
-   var _loc14_ = _global.CScaleformComponent_FriendsList.IsFriendWatchable(SelectedXuid);
-   var _loc15_ = _global.CScaleformComponent_MatchInfo.CanWatchHighlights(MatchId,SelectedXuid);
-   var _loc17_ = _global.CScaleformComponent_FriendsList.IsFriendPlayingCSGO(SelectedXuid);
+   var _loc21_ = _global.CScaleformComponent_FriendsList.IsFriendInvited(SelectedXuid);
+   var _loc19_ = _global.CScaleformComponent_FriendsList.IsFriendJoinable(SelectedXuid);
+   var _loc17_ = _global.CScaleformComponent_FriendsList.IsFriendWatchable(SelectedXuid);
+   var _loc18_ = _global.CScaleformComponent_MatchInfo.CanWatchHighlights(MatchId,SelectedXuid);
+   var _loc20_ = _global.CScaleformComponent_FriendsList.IsFriendPlayingCSGO(SelectedXuid);
+   var _loc15_ = _global.CScaleformComponent_MyPersona.GetLauncherType() != "perfectworld"?false:true;
    var _loc8_ = 24;
    var _loc9_ = "images/ui_icons/";
    var _loc13_ = false;
-   if("friend" == _global.CScaleformComponent_FriendsList.GetFriendRelationship(SelectedXuid))
+   this.CurrentXuid = SelectedXuid;
+   this.CurrentMatchId = MatchId;
+   this.IsSelf = bIsSelf;
+   var _loc14_ = _global.CScaleformComponent_FriendsList.GetFriendRelationship(SelectedXuid);
+   trace("---------------------------------FriendRelationship----------------------------" + _loc14_);
+   if("friend" == _loc14_)
    {
       _loc13_ = true;
    }
@@ -390,32 +396,37 @@ function GetSelectedPlayerActionBtns(MatchId, SelectedXuid, bIsSelf)
       _loc5_.push("invite");
       _loc7_.push("#SFUI_Invite");
    }
-   if(_loc16_)
+   if(_loc19_)
    {
       _loc5_.push("join");
       _loc7_.push("#SFUI_Join_Game");
    }
-   if(_loc14_)
+   if(_loc17_)
    {
       _loc5_.push("watch");
       _loc7_.push("#SFUI_Watch");
    }
-   if(_loc17_)
+   if(_loc20_)
    {
       _loc5_.push("goprofile");
       _loc7_.push("#SFUI_Lobby_ShowCSGOProfile");
    }
-   else
+   else if(!_loc15_)
    {
       _loc5_.push("steamprofile");
       _loc7_.push("#SFUI_Lobby_ShowGamercard");
    }
-   if(!bIsSelf && _loc13_)
+   if(!bIsSelf && _loc13_ && !_loc15_)
    {
       _loc5_.push("message");
       _loc7_.push("#SFUI_Steam_Message");
    }
-   if(_loc15_)
+   if(!bIsSelf && _loc14_ == "none")
+   {
+      _loc5_.push("addfriend");
+      _loc7_.push("#SFUI_Friend_Add");
+   }
+   if(_loc18_)
    {
       var _loc12_ = "";
       var _loc10_ = "";
@@ -503,6 +514,9 @@ function onPressPlayerActionButton(strMenuItem, SelectedXuid, MatchId)
       case "message":
          _global.CScaleformComponent_SteamOverlay.StartChatWithUser(SelectedXuid);
          break;
+      case "addfriend":
+         _global.CScaleformComponent_SteamOverlay.InteractWithUser(SelectedXuid,"friendadd");
+         break;
       case "highlights":
          _global.CScaleformComponent_MatchInfo.WatchHighlights(MatchId,SelectedXuid,true);
          break;
@@ -544,6 +558,13 @@ function OnWatchRound(MatchId, RoundIndex)
 {
    _global.CScaleformComponent_MatchInfo.Watch(MatchId,RoundIndex);
    _global.MainMenuMovie.RemoveAllMainMenuNav();
+}
+function UpdateBtns(xuid)
+{
+   if(this.CurrentXuid == xuid)
+   {
+      GetSelectedPlayerActionBtns(this.CurrentMatchId,xuid,this.IsSelf);
+   }
 }
 var CTColor = "0x55708c";
 var TColor = "0x8e7140";
